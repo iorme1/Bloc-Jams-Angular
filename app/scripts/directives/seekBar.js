@@ -1,5 +1,5 @@
 (function() {
-    function seekBar() {
+    function seekBar($document) {
         var calculatePercent = function(seekBar, event) {
             var offsetX = event.pageX - seekBar.offset().left;
             var seekBarWidth = seekBar.width();
@@ -10,7 +10,7 @@
         };
 
         return {
-            templateURL: '/templates/directives/seek_bar.html',
+            templateUrl: '/templates/directives/seek_bar.html',
             replace: true,
             restrict: 'E',
             scope: { },
@@ -35,12 +35,26 @@
                     var percent = calculatePercent(seekBar, event);
                     scope.value = percent * scope.max;
                 };
+
+                scope.trackThumb = function() {
+                    $document.bind('mousemove.thumb', function(event){
+                        var percent = calculatePercent(seekBar, event);
+                        scope.$apply(function() {
+                            scope.value = percent * scope.max;
+                        });
+                    });
+
+                    $document.bind('mouseup.thumb', function() {
+                        $document.unbind('mousemove.thumb');
+                        $document.unbind('mouseup.thumb');
+                    });
+                };
             }
         };
     }
 
     angular
         .module('blocJams')
-        .directive('seekBar', seekBar);
+        .directive('seekBar',['$document', seekBar]);
 
 })();
