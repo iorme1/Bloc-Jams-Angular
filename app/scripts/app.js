@@ -21,11 +21,6 @@
               url: '/collection',
               controller: 'CollectionCtrl as collection',
               templateUrl: '/templates/collection.html'
-          })
-          .state('player_bar', {
-              url: '/player_bar',
-              controller: 'PlayerBarCtrl as playerBar',
-              templateUrl: '/templates/player_bar.html'
           });
     }
       angular
